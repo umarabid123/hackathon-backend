@@ -29,4 +29,4 @@ const authVerify = (req, res, next) => {
         })
     }
 }
-module.exports = authVerify
+module.exports = authVerify   
