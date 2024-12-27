@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/authModel");
-var jwt = require('jsonwebtoken');
+var jwt = require("jsonwebtoken");
 
-const secretKey = "abid$12345@umar"
+const secretKey = "abid$12345@umar";
 
 const signUp = async (req, res) => {
 	try {
@@ -39,43 +39,60 @@ const signUp = async (req, res) => {
 			message: "An error occurred while creating user",
 		});
 	}
-}
+};
 const signIn = async (req, res) => {
 	try {
 		const user = await User.findOne({ email: req.body.email });
-		console.log('user: ', user);
+		console.log("user: ", user);
 
-		if (!user) { 
+		if (!user) {
 			return res.status(401).json({
-                data: [],
-                message: "User not found",
-            });
+				data: [],
+				message: "User not found",
+			});
 		}
-		const validPassword = await bcrypt.compare(req.body.password, user.password);
+		const validPassword = await bcrypt.compare(
+			req.body.password,
+			user.password
+		);
 		if (!validPassword) {
 			return res.status(401).json({
-                data: [],
-                message: "Invalid password",
-            });
+				data: [],
+				message: "Invalid password",
+			});
 		}
-		var token = jwt.sign({ email:req.body.email, userName:req.body.userName  }, secretKey);
-		console.log('token: ', token);
+		var token = jwt.sign(
+			{ email: req.body.email, userName: req.body.userName },
+			secretKey
+		);
+		console.log("token: ", token);
 		res.json({
-			data: [{
-				token:token,
-				username: user.username,
-				email: user.email,
-                address: user.address,
-			}],
-            status: "200",
-            message: "User logged in successfully",
-        });
-
+			token: token,
+			username: user.username,
+			email: user.email,
+			address: user.address,
+			status: "200",
+			message: "User logged in successfully",
+		});
 	} catch (e) {
 		return res.status(400).json({
 			data: [],
 			message: "User not found",
 		});
 	}
-}
-module.exports = {signUp, signIn}
+};
+
+const sendResetPassword = async () => {
+	try {
+		const userExist = await User.findOne({ email: req.body.email });
+		if(!userExist) { throw new Error("User not found"); }
+		if(!userExist.verified) { throw new Error ("User not verified"); }
+		const otpDetails = {
+			email:req.body.email,
+			subject:"Reset Password",
+			message:"Reset Password for user with email ",
+			duration:1
+		}
+	} catch (e) {}
+};
+module.exports = { signUp, signIn };
