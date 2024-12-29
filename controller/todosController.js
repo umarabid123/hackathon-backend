@@ -43,10 +43,18 @@ const createTodos = async (req, res) => {
 	try {
 		let newTodo = new Todos({
 			id: req.body?.id,
+			name:req?.body?.name,
 			title: req.body?.title,
 			description: req.body?.description,
+			date: req.body?.date,
+			category:req?.body?.category,
+			visibility: req.body?.visibility
 		});
+		console.log("newTodo", newTodo);
+		
 		let output = await newTodo.save();
+		console.log("output", output);
+		
 		res.json({
 			data: output,
 			status: "success",

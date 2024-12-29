@@ -6,7 +6,7 @@ var todosRoute = express.Router()
 todosRoute.get("/", fetchTodos);
 
 todosRoute.get("/:id", authVerify,getByOneId);
-todosRoute.post("/create", authVerify,createTodos);
+todosRoute.post("/create",createTodos);
 todosRoute.put("/update/:id", authVerify,updateTodos);
 todosRoute.delete("/delete/:id", authVerify,deleteTodos);
 
