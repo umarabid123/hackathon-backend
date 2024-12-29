@@ -10,7 +10,7 @@ const signUp = async (req, res) => {
 			return res.status(400).json({
 				data: [],
 				message: "Password is required",
-			});
+			});    
 		}
 		var hash = await bcrypt.hash(req.body.password, 8);
 		console.log("hash: ", hash);
